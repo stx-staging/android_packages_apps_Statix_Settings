@@ -25,7 +25,7 @@ import android.os.UserHandle;
 import android.provider.SearchIndexableResource;
 import android.provider.Settings;
 
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
@@ -43,16 +43,16 @@ public class SmartPixels extends SettingsPreferenceFragment implements Indexable
     private static final String SMART_PIXELS_ON_POWER_SAVE = "smart_pixels_on_power_save";
 
     private SmartPixelsObserver mSmartPixelsObserver;
-    private SwitchPreference mSmartPixelsEnabled;
-    private SwitchPreference mSmartPixelsPowerSave;
+    private SwitchPreferenceCompat mSmartPixelsEnabled;
+    private SwitchPreferenceCompat mSmartPixelsPowerSave;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.smart_pixels);
-        mSmartPixelsEnabled = (SwitchPreference) findPreference(SMART_PIXELS_ENABLE);
-        mSmartPixelsPowerSave = (SwitchPreference) findPreference(SMART_PIXELS_ON_POWER_SAVE);
+        mSmartPixelsEnabled = (SwitchPreferenceCompat) findPreference(SMART_PIXELS_ENABLE);
+        mSmartPixelsPowerSave = (SwitchPreferenceCompat) findPreference(SMART_PIXELS_ON_POWER_SAVE);
 
         mSmartPixelsObserver = new SmartPixelsObserver(new Handler());
     }
