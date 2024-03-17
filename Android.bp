@@ -26,6 +26,7 @@ android_library {
         "elmyra-sysui-shared",
     ],
     resource_dirs: ["res", "res-product"],
+    use_resource_processor: true,
 }
 
 android_library {
@@ -41,6 +42,7 @@ android_library {
         "Settings-core",
         "StatixSettings-res",
     ],
+    plugins: ["androidx.room_room-compiler-plugin"],
 }
 
 android_app {
@@ -58,6 +60,7 @@ android_app {
     static_libs: [
         "StatixSettings-core",
     ],
+    use_resource_processor: true,
     uses_libs: ["org.apache.http.legacy"],
     optimize: {
         proguard_flags_files: [

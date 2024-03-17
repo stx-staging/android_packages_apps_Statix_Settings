@@ -21,9 +21,6 @@ import android.hardware.display.AmbientDisplayConfiguration;
 
 import androidx.annotation.NonNull;
 
-import com.android.settings.aware.AwareFeatureProvider;
-import com.android.settings.gestures.AssistGestureFeatureProvider;
-import com.android.settings.gestures.AssistGestureSettingsPreferenceController;
 import com.android.settings.gestures.DoubleTapPowerPreferenceController;
 import com.android.settings.gestures.DoubleTapScreenPreferenceController;
 import com.android.settings.gestures.DoubleTwistPreferenceController;
@@ -38,17 +35,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatixGesturesSettingPreferenceController extends GesturesSettingPreferenceController {
-    private final AssistGestureFeatureProvider mFeatureProvider;
-    private final AwareFeatureProvider mAwareFeatureProvider;
     private List<AbstractPreferenceController> mGestureControllers;
 
     private static final String KEY_GESTURES_SETTINGS = "gesture_settings";
     private static final String FAKE_PREF_KEY = "fake_key_only_for_get_available";
 
-    public StatixGesturesSettingPreferenceController(Context context) {
-        super(context);
-        mFeatureProvider = FeatureFactory.getFactory(context).getAssistGestureFeatureProvider();
-        mAwareFeatureProvider = FeatureFactory.getFactory(context).getAwareFeatureProvider();
+    public StatixGesturesSettingPreferenceController(Context context, String key) {
+        super(context, key);
     }
 
     @Override
@@ -75,9 +68,6 @@ public class StatixGesturesSettingPreferenceController extends GesturesSettingPr
                 new AmbientDisplayConfiguration(context);
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
 
-        controllers.add(
-                new AssistGestureSettingsPreferenceController(context, FAKE_PREF_KEY)
-                        .setAssistOnly(false));
         controllers.add(new SwipeToNotificationPreferenceController(context, FAKE_PREF_KEY));
         controllers.add(new DoubleTwistPreferenceController(context, FAKE_PREF_KEY));
         controllers.add(new DoubleTapPowerPreferenceController(context, FAKE_PREF_KEY));

@@ -21,12 +21,4 @@ public final class FeatureFactoryImplStatix extends FeatureFactoryImpl {
         }
         return mAccountFeatureProvider;
     }
-
-    @Override
-    public BatteryStatusFeatureProvider getBatteryStatusFeatureProvider(Context context) {
-        if (mBatteryStatusFeatureProvider == null) {
-            mBatteryStatusFeatureProvider = new BatteryStatusFeatureProviderStatixImpl(context);
-        }
-        return mBatteryStatusFeatureProvider;
-    }
 }

@@ -87,7 +87,7 @@ class ElmyraSettingsFragment : PreferenceFragmentCompat() {
   }
 
   inner class SettingsObserver(handler: Handler) : ContentObserver(handler) {
-    override fun onChange(selfChange: Boolean, uri: Uri) {
+    override fun onChange(selfChange: Boolean, uri: Uri?) {
       updateUi()
     }
   }
