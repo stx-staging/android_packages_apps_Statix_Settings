@@ -67,20 +67,23 @@ class AwesomeQrRenderer {
                 return RenderResult(firstRenderedFrame, background.outputFile, RenderResult.OutputType.GIF)
             } else if (renderOptions.background is BlendBackground && renderOptions.background!!.bitmap != null) {
                 val background = renderOptions.background as BlendBackground
-                var clippedBackground: Bitmap? = null
-                if (background.clippingRect != null) {
-                    clippedBackground = Bitmap.createBitmap(
-                            background.bitmap,
+                val clippedBackground: Bitmap? = background.bitmap?.let { bitmap ->
+                    if (background.clippingRect != null) {
+                        Bitmap.createBitmap(
+                            bitmap,
                             Math.round(background.clippingRect!!.left.toFloat()),
                             Math.round(background.clippingRect!!.top.toFloat()),
                             Math.round(background.clippingRect!!.width().toFloat()),
                             Math.round(background.clippingRect!!.height().toFloat())
-                    )
+                        )
+                    } else {
+                        bitmap
+                    }
                 }
                 val rendered = renderFrame(renderOptions, clippedBackground ?: background.bitmap)
                 clippedBackground?.recycle()
                 val scaledBoundingRects = scaleImageBoundingRectByClippingRect(background.bitmap!!, renderOptions.size, background.clippingRect)
-                val fullRendered = Bitmap.createScaledBitmap(background.bitmap, scaledBoundingRects[0].width(), scaledBoundingRects[0].height(), true)
+                val fullRendered = background.bitmap?.let { Bitmap.createScaledBitmap(it, scaledBoundingRects[0].width(), scaledBoundingRects[0].height(), true) } ?: return RenderResult(rendered, null, RenderResult.OutputType.Blend)
                 val fullCanvas = Canvas(fullRendered)
                 val paint = Paint()
                 paint.isAntiAlias = true
@@ -91,15 +94,18 @@ class AwesomeQrRenderer {
                 return RenderResult(fullRendered, null, RenderResult.OutputType.Blend)
             } else if (renderOptions.background is StillBackground) {
                 val background = renderOptions.background as StillBackground
-                var clippedBackground: Bitmap? = null
-                if (background.clippingRect != null) {
-                    clippedBackground = Bitmap.createBitmap(
-                            background.bitmap,
+                val clippedBackground: Bitmap? = background.bitmap?.let { bitmap ->
+                    if (background.clippingRect != null) {
+                        Bitmap.createBitmap(
+                            bitmap,
                             Math.round(background.clippingRect!!.left.toFloat()),
                             Math.round(background.clippingRect!!.top.toFloat()),
                             Math.round(background.clippingRect!!.width().toFloat()),
                             Math.round(background.clippingRect!!.height().toFloat())
-                    )
+                        )
+                    } else {
+                        bitmap
+                    }
                 }
                 val rendered = renderFrame(renderOptions, clippedBackground ?: background.bitmap)
                 clippedBackground?.recycle()
@@ -286,10 +292,10 @@ class AwesomeQrRenderer {
                 }
             }
 
-            if (renderOptions.logo != null && renderOptions.logo!!.bitmap != null) {
+            renderOptions.logo?.bitmap?.let { logoBitmap ->
                 val logo = renderOptions.logo!!
                 val logoScaledSize = (unscaledInnerRenderSize * logo.scale).toInt()
-                val logoScaled = Bitmap.createScaledBitmap(logo.bitmap, logoScaledSize, logoScaledSize, true)
+                val logoScaled = Bitmap.createScaledBitmap(logoBitmap, logoScaledSize, logoScaledSize, true)
                 val logoOpt = Bitmap.createBitmap(logoScaled.width, logoScaled.height, Bitmap.Config.ARGB_8888)
                 val logoCanvas = Canvas(logoOpt)
                 val logoRect = Rect(0, 0, logoScaled.width, logoScaled.height)
@@ -445,7 +451,7 @@ class AwesomeQrRenderer {
             val scaleMatrix = Matrix()
             scaleMatrix.setScale(ratioX, ratioY, middleX, middleY)
             val canvas = Canvas(dst)
-            canvas.matrix = scaleMatrix
+            canvas.setMatrix(scaleMatrix)
             canvas.drawBitmap(src, middleX - src.width / 2,
                     middleY - src.height / 2, cPaint)
         }
