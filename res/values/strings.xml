@@ -41,6 +41,13 @@
     <!-- Dark UI text -->
     <string name="dark_ui_text">Dark theme uses a black background to help keep your battery alive longer. Dark theme schedules wait to turn on until your screen is off.</string>
 
+    <!-- Notification & Ringtone -->
+    <string name="keywords_notification_sound">sound, haptics, vibrate, vibration, notification, alert</string>
+    <string name="keywords_ringtone_sound">sound, haptics, vibrate, vibration, ringtone, alert</string>
+    <string name="phone_notification_channel_sound_title">Sound &amp; Vibration</string>
+    <string name="phone_notification_title">Notification alert</string>
+    <string name="phone_ringtone_title">Ringtone alert</string>
+
     <!-- Account type associated with the backup account. Empty for AOSP. [DO NOT TRANSLATE] -->
     <string name="account_type" translatable="false">com.google</string>
 
