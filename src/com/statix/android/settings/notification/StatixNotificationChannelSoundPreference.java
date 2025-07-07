@@ -6,16 +6,14 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.android.server.notification.Flags;
+
 import com.android.settings.notification.app.NotificationSoundPreference;
 
 import com.statix.android.settings.R;
 
 public class StatixNotificationChannelSoundPreference extends NotificationSoundPreference {
     private Context mContext;
-
-    private boolean isVibrationSupported() {
-        return false;
-    }
 
     public StatixNotificationChannelSoundPreference(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -48,5 +46,9 @@ public class StatixNotificationChannelSoundPreference extends NotificationSoundP
             str = "";
         }
         return Utils.formatSoundVibrationSummary(generateRingtoneTitle, str);
+    }
+
+    private boolean isVibrationSupported() {
+        return Flags.notificationVibrationInSoundUri() && Flags.notificationVibrationInSoundUriForChannel() && this.mContext.getResources().getBoolean(com.android.internal.R.bool.config_startDreamImmediatelyOnDock);
     }
 }

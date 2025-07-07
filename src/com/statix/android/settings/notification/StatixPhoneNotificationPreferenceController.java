@@ -3,6 +3,8 @@ package com.statix.android.settings.notification;
 import android.content.Context;
 import android.content.IntentFilter;
 
+import com.android.server.notification.Flags;
+
 public class StatixPhoneNotificationPreferenceController extends BaseRingtonePreferenceController {
     @Override // com.google.android.settings.notification.BaseRingtonePreferenceController, com.android.settings.slices.Sliceable
     public /* bridge */ /* synthetic */ Class getBackgroundWorkerClass() {
@@ -39,11 +41,6 @@ public class StatixPhoneNotificationPreferenceController extends BaseRingtonePre
         return super.isSliceable();
     }
 
-    @Override // com.google.android.settings.notification.BaseRingtonePreferenceController
-    public boolean isVibrationSupported() {
-        return false;
-    }
-
     @Override // com.google.android.settings.notification.BaseRingtonePreferenceController, com.android.settings.slices.Sliceable
     public /* bridge */ /* synthetic */ boolean useDynamicSliceSummary() {
         return super.useDynamicSliceSummary();
@@ -56,5 +53,10 @@ public class StatixPhoneNotificationPreferenceController extends BaseRingtonePre
     @Override // com.google.android.settings.notification.BaseRingtonePreferenceController, com.android.settings.core.BasePreferenceController
     public int getAvailabilityStatus() {
         return (isVibrationSupported() && this.mContext.getResources().getBoolean(com.android.settings.R.bool.config_show_notification_ringtone)) ? 0 : 3;
+    }
+
+    @Override // com.google.android.settings.notification.BaseRingtonePreferenceController
+    public boolean isVibrationSupported() {
+        return Flags.notificationVibrationInSoundUri() && this.mContext.getResources().getBoolean(com.android.internal.R.bool.config_startDreamImmediatelyOnDock);
     }
 }

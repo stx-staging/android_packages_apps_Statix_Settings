@@ -9,6 +9,7 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.PreferenceScreen;
 
+import com.android.internal.hidden_from_bootclasspath.android.media.audio.Flags;
 import com.android.settings.DefaultRingtonePreference;
 import com.android.settingslib.core.AbstractPreferenceController;
 
@@ -51,11 +52,6 @@ public class StatixPhoneRingtonePreferenceController extends BaseRingtonePrefere
         return super.isSliceable();
     }
 
-    @Override // com.google.android.settings.notification.BaseRingtonePreferenceController
-    public boolean isVibrationSupported() {
-        return false;
-    }
-
     @Override // com.google.android.settings.notification.BaseRingtonePreferenceController, com.android.settings.slices.Sliceable
     public /* bridge */ /* synthetic */ boolean useDynamicSliceSummary() {
         return super.useDynamicSliceSummary();
@@ -85,6 +81,11 @@ public class StatixPhoneRingtonePreferenceController extends BaseRingtonePrefere
     @Override // androidx.lifecycle.DefaultLifecycleObserver
     public void onStop(LifecycleOwner lifecycleOwner) {
         this.mReceiver.setListening(false);
+    }
+
+    @Override // com.google.android.settings.notification.BaseRingtonePreferenceController
+    public boolean isVibrationSupported() {
+        return Flags.enableRingtoneHapticsCustomization() && this.mContext.getResources().getBoolean(com.android.internal.R.bool.config_startDreamImmediatelyOnDock);
     }
 
     final class RingerModeReceiver extends BroadcastReceiver {

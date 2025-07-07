@@ -108,18 +108,26 @@
     <!-- Phone ringtone -->
     <com.android.settings.DefaultRingtonePreference
         android:key="phone_ringtone"
-        android:title="@string/ringtone_title"
-        android:dialogTitle="@string/ringtone_title"
+        android:title="@string/phone_ringtone_title"
+        android:dialogTitle="@string/phone_ringtone_title"
         android:summary="@string/summary_placeholder"
         android:ringtoneType="ringtone"
         android:order="-120"
         settings:keywords="@string/sound_settings"/>
 
     <com.android.settings.DefaultRingtonePreference
+        android:title="@string/phone_notification_title"
+        android:key="notification_ringtone"
+        android:summary="@string/summary_placeholder"
+        android:order="-119"
+        android:dialogTitle="@string/phone_notification_title"
+        android:ringtoneType="notification"/>
+
+    <com.android.settings.DefaultRingtonePreference
         android:title="@string/phone_ringtone_title"
         android:key="pixel_phone_ringtone"
         android:summary="@string/summary_placeholder"
-        android:order="-119"
+        android:order="-118"
         android:dialogTitle="@string/phone_ringtone_title"
         android:ringtoneType="ringtone"
         settings:controller="com.statix.android.settings.notification.StatixPhoneRingtonePreferenceController"
@@ -129,7 +137,7 @@
         android:title="@string/phone_notification_title"
         android:key="pixel_phone_notification"
         android:summary="@string/summary_placeholder"
-        android:order="-118"
+        android:order="-117"
         android:dialogTitle="@string/phone_notification_title"
         android:ringtoneType="notification"
         settings:controller="com.statix.android.settings.notification.StatixPhoneNotificationPreferenceController"
@@ -168,15 +176,6 @@
         android:order="-80"
         android:fragment="com.android.settings.gestures.PreventRingingGestureSettings"
         settings:controller="com.android.settings.gestures.PreventRingingParentPreferenceController"/>
-
-    <!-- Default notification ringtone -->
-    <com.android.settings.DefaultRingtonePreference
-        android:key="notification_ringtone"
-        android:title="@string/notification_ringtone_title"
-        android:dialogTitle="@string/notification_ringtone_title"
-        android:summary="@string/summary_placeholder"
-        android:ringtoneType="notification"
-        android:order="-70"/>
 
     <!-- Default alarm ringtone -->
     <com.android.settings.DefaultRingtonePreference

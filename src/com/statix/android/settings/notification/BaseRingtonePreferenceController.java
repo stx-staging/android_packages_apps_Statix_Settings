@@ -74,24 +74,28 @@ public abstract class BaseRingtonePreferenceController extends BasePreferenceCon
     }
 
     private void updateSummary(final Preference preference) {
-        Uri actualDefaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(this.mContext, getRingtoneType());
-        String title = Ringtone.getTitle(this.mContext, actualDefaultRingtoneUri, false, true);
-        String str = "";
-        try {
-            if (isVibrationSupported()) {
-                str = Utils.queryVibrationTitleFromRingtoneUri(this.mContext, actualDefaultRingtoneUri, getRingtoneType());
-            }
-        } catch (IllegalArgumentException e) {
-            Log.w(TAG, "Error getting ringtone summary.", e);
-        }
-        final String formatSoundVibrationSummary = Utils.formatSoundVibrationSummary(title, str);
-        if (formatSoundVibrationSummary != null) {
+        final String ringtoneSummary = getRingtoneSummary(this.mContext, getRingtoneType(), isVibrationSupported());
+        if (ringtoneSummary != null) {
             ThreadUtils.postOnMainThread(new Runnable() {
                 @Override
                 public final void run() {
-                    preference.setSummary(formatSoundVibrationSummary);
+                    preference.setSummary(ringtoneSummary);
                 }
             });
         }
+    }
+
+    static String getRingtoneSummary(Context context, int i, boolean z) {
+        Uri actualDefaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(context, i);
+        String title = Ringtone.getTitle(context, actualDefaultRingtoneUri, false, true);
+        String str = "";
+        if (z) {
+            try {
+                str = Utils.queryVibrationTitleFromRingtoneUri(context, actualDefaultRingtoneUri, i);
+            } catch (IllegalArgumentException e) {
+                Log.w(TAG, "Error getting ringtone summary.", e);
+            }
+        }
+        return Utils.formatSoundVibrationSummary(title, str);
     }
 }
