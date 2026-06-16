@@ -49,9 +49,4 @@
     <style name="TextAppearance.SuggestionCardTitle.TwoPane" parent="@style/TextAppearance.SuggestionCardTitle">
         <item name="android:textColor">@android:color/system_on_primary_fixed</item>
     </style>
-    <style name="Theme.Settings.LocalePicker" parent="@style/Theme.Settings">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:clipChildren">true</item>
-        <item name="android:clipToPadding">true</item>
-    </style>
 </resources>
