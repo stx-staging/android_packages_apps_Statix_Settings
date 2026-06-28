@@ -169,4 +169,8 @@
         <item>com.twitter.android</item>
         <item>com.snapchat.android</item>
     </string-array>
+
+    <!-- Locale Picker -->
+    <bool name="config_show_setuplocalepicker_region_searchbox">true</bool>
+    <bool name="config_force_showing_icon_on_locale_picker_screen">false</bool>
 </resources>
