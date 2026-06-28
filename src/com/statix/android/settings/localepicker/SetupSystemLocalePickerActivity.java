@@ -58,7 +58,7 @@ public class SetupSystemLocalePickerActivity extends Activity {
     }
 
     private void applySuwTheme() {
-        setTheme(R.style.Theme.Settings.LocalePicker);
+        setTheme(R.style.Theme_Settings_LocalePicker);
         if (ThemeHelper.shouldApplyGlifExpressiveStyle(getApplicationContext())) {
             if (ThemeHelper.trySetSuwTheme(this)) {
                 return;
@@ -83,7 +83,11 @@ public class SetupSystemLocalePickerActivity extends Activity {
         if (getResources().getBoolean(R.bool.config_force_showing_icon_on_locale_picker_screen)
                 && imageView != null) {
             TypedValue typedValue = new TypedValue();
-            if (getTheme().resolveAttribute(R.attr.sudGlifIconSize, typedValue, true)) {
+            if (getTheme()
+                    .resolveAttribute(
+                            com.google.android.setupdesign.R.attr.sudGlifIconSize,
+                            typedValue,
+                            true)) {
                 int dimension = (int) typedValue.getDimension(getResources().getDisplayMetrics());
                 ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
                 if (layoutParams != null) {

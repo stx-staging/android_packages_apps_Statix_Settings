@@ -22,14 +22,17 @@ public class LocalePickerSetupWizardEventsReceiver extends BroadcastReceiver {
             if (locale.getCountry().isEmpty()) {
                 for (LocaleStore.LocaleInfo localeInfo :
                         LocaleStore.getLevelLocales(
-                                context, new HashSet(), (LocaleStore.LocaleInfo) null, true)) {
+                                context,
+                                new HashSet<String>(),
+                                (LocaleStore.LocaleInfo) null,
+                                true)) {
                     if (sameLanguageAndScript(localeInfo.getLocale(), locale)) {
                         LocalePicker.updateLocales(
                                 new LocaleList(
                                         ((LocaleStore.LocaleInfo)
                                                         LocaleStore.getLevelLocales(
                                                                         context,
-                                                                        new HashSet(),
+                                                                        new HashSet<String>(),
                                                                         localeInfo,
                                                                         true)
                                                                 .iterator()

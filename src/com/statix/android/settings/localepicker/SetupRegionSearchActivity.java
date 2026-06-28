@@ -1,6 +1,7 @@
 package com.google.android.settings.localepicker;
 
 import android.app.Activity;
+import android.app.settings.SettingsEnums;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Filter;
-import android.widget.Filter.FilterResults;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -93,7 +93,7 @@ public class SetupRegionSearchActivity extends Activity implements TextWatcher {
     }
 
     private void applySuwTheme() {
-        setTheme(R.style.Theme.Settings.LocalePicker);
+        setTheme(R.style.Theme_Settings_LocalePicker);
         if (ThemeHelper.shouldApplyGlifExpressiveStyle(getApplicationContext())) {
             if (ThemeHelper.trySetSuwTheme(this)) {
                 return;
@@ -401,7 +401,7 @@ public class SetupRegionSearchActivity extends Activity implements TextWatcher {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_LOCALE_PICKER && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_LOCALE_PICKER && resultCode == RESULT_OK) {
             if (data != null) {
                 LocaleStore.LocaleInfo serializableExtra =
                         (LocaleStore.LocaleInfo) data.getSerializableExtra("localeInfo");

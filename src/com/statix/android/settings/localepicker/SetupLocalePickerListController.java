@@ -118,12 +118,12 @@ public class SetupLocalePickerListController implements RecyclerItemAdapter.OnIt
                     new LocalePickerAccessibilityDelegate(recyclerView));
         }
         if (mSearchBarItem != null && (mIsNumberingSystemMode || !isRegionSearchSupported())) {
-            (mSearchBarItem.getItemAt(0)).setVisible(false);
+            ((SearchBarItem) mSearchBarItem.getItemAt(0)).setVisible(false);
         }
         if (mDividerItem != null
                 && (ThemeHelper.shouldApplyGlifExpressiveStyle(mActivity)
                         || AccessibilityStateUtils.isTtsEnabled(mContext.getContentResolver()))) {
-            (mDividerItem.getItemAt(0)).setVisible(false);
+            ((DividerItem) mDividerItem.getItemAt(0)).setVisible(false);
         }
         updateScreen();
         mAdapter.setOnItemSelectedListener(this);
@@ -155,10 +155,10 @@ public class SetupLocalePickerListController implements RecyclerItemAdapter.OnIt
             }
             mSuggestedListGroup
                     .getHeader()
-                    .setTitleColor(mContext.getColor(android.R.color.profile_badge_2));
+                    .setTitleColor(mContext.getColor(com.android.internal.R.color.profile_badge_2));
             mAllListGroup
                     .getHeader()
-                    .setTitleColor(mContext.getColor(android.R.color.profile_badge_2));
+                    .setTitleColor(mContext.getColor(com.android.internal.R.color.profile_badge_2));
             return;
         }
         boolean shouldApplyGlifExpressiveStyle =
@@ -434,10 +434,11 @@ public class SetupLocalePickerListController implements RecyclerItemAdapter.OnIt
     }
 
     private String[] getSuggestedLocalesFromStringArray() {
-        if (sPskuMap.getOrDefault(mPskuString, 0) == 1) {
+        int intValue = ((Integer) sPskuMap.getOrDefault(mPskuString, 0)).intValue();
+        if (intValue == 1) {
             return mContext.getResources().getStringArray(R.array.japan_locales);
         }
-        if (sPskuMap.getOrDefault(mPskuString, 0) == 2) {
+        if (intValue == 2) {
             return mContext.getResources().getStringArray(R.array.united_states_locales);
         }
         return mContext.getResources().getStringArray(R.array.global_locales);

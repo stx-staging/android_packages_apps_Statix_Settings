@@ -19,6 +19,8 @@ import com.statix.android.settings.R;
 import java.io.Serializable;
 
 public class SetupRegionAndNumberingSystemActivity extends Activity {
+    private static final int REQUEST_LOCALE_PICKER = 0;
+
     private RecyclerItemAdapter mAdapter;
     private ViewTreeObserver.OnGlobalFocusChangeListener mFocusChangeListener = null;
     private boolean mIsNumberingMode;
@@ -53,7 +55,7 @@ public class SetupRegionAndNumberingSystemActivity extends Activity {
     }
 
     private void applySuwTheme() {
-        setTheme(R.style.Theme.Settings.LocalePicker);
+        setTheme(R.style.Theme_Settings_LocalePicker);
         if (ThemeHelper.shouldApplyGlifExpressiveStyle(getApplicationContext())) {
             if (ThemeHelper.trySetSuwTheme(this)) {
                 return;
