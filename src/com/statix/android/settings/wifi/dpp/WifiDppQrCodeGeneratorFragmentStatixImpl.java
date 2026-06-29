@@ -40,6 +40,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.app.chooser.DisplayResolveInfo;
@@ -49,15 +52,7 @@ import com.android.settings.wifi.dpp.WifiDppQrCodeGeneratorFragment;
 import com.android.settings.wifi.dpp.WifiNetworkConfig;
 import com.android.settingslib.qrcode.QrCodeGenerator;
 
-import com.github.sumimakito.awesomeqr.*;
-import com.github.sumimakito.awesomeqr.option.background.*;
-import com.github.sumimakito.awesomeqr.option.color.Color;
-import com.github.sumimakito.awesomeqr.option.logo.Logo;
-import com.github.sumimakito.awesomeqr.option.RenderOption;
-import com.github.sumimakito.awesomeqr.util.RectUtils;
-
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.google.zxing.WriterException;
 
 import com.statix.android.settings.R;
 
@@ -81,62 +76,28 @@ public class WifiDppQrCodeGeneratorFragmentStatixImpl extends WifiDppQrCodeGener
     private static final String EXTRA_SECURITY_TYPE = "android.intent.extra.SECURITY_TYPE";
     private static final String EXTRA_HIDDEN_SSID = "android.intent.extra.HIDDEN_SSID";
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ImageView qrCodeView = view.findViewById(R.id.qrcode_view);
+        if (qrCodeView != null) {
+            qrCodeView.setVisibility(View.GONE);
+        }
+        FragmentContainerView fragmentContainerView = view.findViewById(R.id.qr_code_fragment_container_view);
+        if (fragmentContainerView != null) {
+            fragmentContainerView.setVisibility(View.VISIBLE);
+        }
+    }
+
     // Magic Start.
     @Override
     protected void setQrCode() {
-        try {
-            final int qrcodeSize = getContext().getResources().getDimensionPixelSize(
-                    com.android.settings.R.dimen.qrcode_size);
-
-                    // A gif background (animated)
-                    // GifBackground background = new GifBackground();
-                    // background.setInputFile(R.raw.nyan_cat); // assign a file object of a gif image to this field
-                    // background.setOutputFile(new File(pictureStorage, "output.gif")); // IMPORTANT: the output image will be saved to this file object
-                    // background.setClippingRect(new Rect(0, 0, 200, 200));
-                    // background.setAlpha(0.7f);
-
-                    Color color = new Color(); 
-                    color.setLight(0xFFFFFFFF); // for blank spaces
-                    color.setDark(0xFFFF8C8C); // for non-blank spaces
-                    color.setBackground(0xFFFFFFFF); // for the background (will be overriden by background images, if set)
-                    color.setAuto(true); // set to true to automatically pick out colors from the background image (will only work if background image is present)
-
-                    RenderOption renderOption = new RenderOption();
-                    renderOption.setContent(mQrCode); // content to encode
-                    renderOption.setSize(qrcodeSize); // size of the final QR code image
-                    renderOption.setBorderWidth(20); // width of the empty space around the QR code
-                    renderOption.setEcl(ErrorCorrectionLevel.M); // (optional) specify an error correction level
-                    renderOption.setPatternScale(0.35f); // (optional) specify a scale for patterns
-                    renderOption.setRoundedPatterns(true); // (optional) if true, blocks will be drawn as dots instead
-                    renderOption.setClearBorder(true); // if set to true, the background will NOT be drawn on the border area
-                    renderOption.setColor(color); // set a color palette for the QR code
-                    // renderOption.setBackground(background); // set a background, keep reading to find more about it
-                    // renderOption.setLogo(logo); // set a logo, keep reading to find more about it
-
-                    try {
-                        RenderResult result = AwesomeQrRenderer.render(renderOption);
-                        if (result.getBitmap() != null) {
-                            // play with the bitmap
-                            mQrCodeView.setImageBitmap(result.getBitmap());
-                        } else if (result.getType() == RenderResult.OutputType.GIF) {
-                            // If your Background is a GifBackground, the image 
-                            // will be saved to the output file set in GifBackground
-                            // instead of being returned here. As a result, the 
-                            // result.getBitmap() will be null.
-                            Log.d(TAG, "GIF QR code generated, bitmap is null, check GifBackground output file.");
-                        } else {
-                            Log.e(TAG, "Error generating QR code: result.getBitmap() is null and type is not GIF.");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-            // final Bitmap bmp = QrCodeGenerator.encodeQrCode(mQrCode, qrcodeSize);
-            // mQrCodeView.setImageBitmap(bmp);
-        } catch (Exception e) {
-            Log.e(TAG, "Error generating QR code bitmap " + e);
+        FragmentManager childFragmentManager = getChildFragmentManager();
+        if (childFragmentManager.findFragmentById(R.id.qr_code_fragment_container_view) == null) {
+            childFragmentManager.beginTransaction().setReorderingAllowed(true).replace(R.id.qr_code_fragment_container_view, new AwesomeQrFragment()).commitNow();
         }
+        Fragment qrCodeFragment = childFragmentManager.findFragmentById(R.id.qr_code_fragment_container_view);
+        ((AwesomeQrFragment) qrCodeFragment).updateQrCodeContent(mQrCode, ErrorCorrectionLevel.L);
     }
     // Magic End.
-
 }
